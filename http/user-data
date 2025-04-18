@@ -1,0 +1,24 @@
+
+# http/user-data
+#cloud-config
+hostname: ubuntu-golden
+manage_etc_hosts: true
+
+users:
+  - name: packer
+    gecos: Packer User
+    groups: users, admin, sudo
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    plain_text_passwd: 'packer'
+    lock_passwd: false
+   
+
+ssh_pwauth: true
+disable_root: false
+chpasswd:
+  expire: false
+
+runcmd:
+  - sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+  - systemctl restart ssh

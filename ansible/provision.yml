@@ -1,0 +1,21 @@
+---
+- name: Configure Ubuntu Golden Image
+  hosts: all
+  become: true
+  tasks:
+    - name: Update and upgrade packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install useful packages
+      apt:
+        name:
+          - net-tools
+          - cloud-init
+        state: present
+
+    - name: Clean up
+      shell: |
+        apt-get autoremove -y
+        apt-get clean
